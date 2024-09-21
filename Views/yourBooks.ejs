@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Books - BookBytes</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding-top: 56px; /* for fixed navbar */
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin-top: 50px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-card {
+            margin-bottom: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .book-card img {
+            width: 100%;
+            height: auto;
+        }
+
+        .book-card-body {
+            padding: 15px;
+        }
+
+        .book-card-title {
+            font-size: 1.25rem;
+            margin-bottom: 10px;
+        }
+
+        .book-card-text {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .footer {
+            background-color: #333;
+            color: black;
+            padding: 10px 0;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="/BookBytes/home">BookBytes</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/BookBytes/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/BookBytes/book">Collection</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/BookBytes/contact">Contact</a>
+                </li>
+                <% if (user) { %>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item text-dark" href="/BookBytes/book/profile">Your Profile</a>
+                            <a class="dropdown-item text-dark" href="/BookBytes/book/yourbooks">Your Books</a>
+                            <a class="dropdown-item text-dark" href="#">Your Orders</a>
+                            <a class="dropdown-item text-dark" href="#">Settings</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-dark" href="/BookBytes/logout">Logout</a>
+                        </div>
+                    </li>
+                <% } else { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/BookBytes/login">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/BookBytes/SignUp">Sign Up</a>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </nav>
+    <% if (messages.error) { %>
+        <div class="alert alert-danger">
+            <ul>
+                <% messages.error.forEach(msg => { %>
+                    <li><%= msg %></li>
+                <% }); %>
+            </ul>
+        </div>
+    <% } %>
+    <% if (messages.success) { %>
+        <div class="alert alert-success">
+            <%= messages.success %>
+        </div>
+    <% } %>
+    <!-- Your Books Section -->
+    <div class="container">
+        <h1>Your Books</h1>
+        <div class="row">
+            <% books.forEach(book => { %>
+                <div class="col-md-4">
+                    <div class="book-card">
+                        <img src="<%= book.bookImg %>" alt="Book Image">
+                        <div class="book-card-body">
+                            <h5 class="book-card-title"><%= book.title %></h5>
+                            <p class="book-card-text"><strong>Author:</strong> <%= book.author %></p>
+                            <p class="book-card-text"><strong>Year:</strong> <%= book.publishYear %></p>
+                            <p class="book-card-text"><strong>Type:</strong> <%= book.type %></p>
+                            <p class="book-card-text"><strong>Owner:</strong> <%= user.username %></p>
+                            <a href="/BookBytes/book/<%= book._id %>/edit" class="btn btn-primary">Edit</a>
+                            <form action="/BookBytes/book/<%= book._id %>?_method=DELETE" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <p>
+                <a href="https://www.facebook.com" target="_blank" class="text-white mx-2">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://www.instagram.com" target="_blank" class="text-white mx-2">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="mailto:someone@example.com" target="_blank" class="text-white mx-2">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </p>
+            <p>© 2024 BookBytes. All Rights Reserved.</p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

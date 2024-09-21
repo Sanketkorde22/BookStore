@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Additional Information</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-check-inline {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <% if (messages.error) { %>
+        <div class="alert alert-danger">
+            <ul>
+                <% messages.error.forEach(msg => { %>
+                    <li><%= msg %></li>
+                <% }); %>
+            </ul>
+        </div>
+    <% } %>
+    <% if (messages.success) { %>
+        <div class="alert alert-success">
+            <%= messages.success %>
+        </div>
+    <% } %>
+    <div class="container">
+        <h1 class="mb-4">Additional Information</h1>
+        <form action="/BookBytes/signup/userinfo" method="POST">
+            <div class="form-group">
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="fullName" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="<%= user.email %>" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="bio">Bio:</label>
+                <textarea id="bio" name="bio" class="form-control" rows="3" placeholder="You can change it later."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" class="form-control" required>
+                    <option value="" disabled selected>Select your gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="genres">Interested Genres:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="genres[]" value="Fiction" id="genreFiction">
+                    <label class="form-check-label" for="genreFiction">Fiction</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="genres[]" value="Non-Fiction" id="genreNonFiction">
+                    <label class="form-check-label" for="genreNonFiction">Non-Fiction</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="genres[]" value="Fantasy" id="genreFantasy">
+                    <label class="form-check-label" for="genreFantasy">Fantasy</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="genres[]" value="Mystery" id="genreMystery">
+                    <label class="form-check-label" for="genreMystery">Mystery</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="genres[]" value="Science Fiction" id="genreScienceFiction">
+                    <label class="form-check-label" for="genreScienceFiction">Science Fiction</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="genres[]" value="Biography" id="genreBiography">
+                    <label class="form-check-label" for="genreBiography">Biography</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="genres[]" value="History" id="genreHistory">
+                    <label class="form-check-label" for="genreHistory">History</label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="genres[]" value="Romance" id="genreRomance">
+                    <label class="form-check-label" for="genreRomance">Romance</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

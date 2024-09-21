@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Store</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="/styles/main.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            padding-top: 56px; /* for fixed navbar */
+        }
+
+        .header {
+            background: #333;
+            color: #fff;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+        }
+
+        .container {
+            margin-top: 20px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 2em;
+            margin-bottom: 20px;
+            color: #007bff; /* Blue color */
+        }
+
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 20px;
+            transition: box-shadow 0.3s ease;
+            background: #fff;
+        }
+
+        .card:hover {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            margin-top: 0;
+            font-size: 1.5em;
+            color: #333; /* Dark text color */
+        }
+
+        .card p {
+            margin: 5px 0;
+            color: #666; /* Medium gray text color */
+        }
+
+        .btn-group {
+            margin-top: 10px;
+        }
+
+        .footer {
+            background-color: #333;
+            color: #f2f2f2;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        .btn-success:hover {
+            background-color: rgb(0, 123, 255);
+            -webkit-text-fill-color: white;
+        }
+
+        .btn-success {
+            background-color: rgb(0, 123, 255);
+            -webkit-text-fill-color: white;
+        }
+
+        .card-img-top {
+            height: 300px; /* Adjust the height as needed */
+            object-fit: contain; /* This ensures the entire image fits within the container */
+            padding: 10px; /* Optional: adds padding around the image */
+        }
+
+        .card-footer {
+            background-color: transparent;
+            border-top: none;
+        }
+
+        .badge-paid, .badge-free {
+            display: inline-block;
+            padding: 0.25em 0.4em;
+            font-size: 75%;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 0.25rem;
+            transition: transform 0.2s, background-color 0.2s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .badge-paid:hover, .badge-free:hover {
+            transform: translateY(-2px);
+        }
+
+        .badge-paid {
+            background: linear-gradient(45deg, #ff4b5c, #ff6b6b);
+            color: white;
+        }
+
+        .badge-free {
+            background: linear-gradient(45deg, #28a745, #85d48a);
+            color: white;
+        }
+
+        /* Additional Styles */
+        .page-link {
+            color: #007bff; /* Blue color for pagination links */
+        }
+
+        .page-link:hover {
+            color: #0056b3; /* Darker blue on hover */
+        }
+
+        .navbar {
+            background-color: #343a40; /* Dark navbar background */
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: rgba(255, 255, 255, 0.5); /* Navbar link color */
+        }
+
+        .navbar-dark .navbar-nav .nav-link:hover {
+            color: rgba(255, 255, 255, 0.75); /* Lighter navbar link color on hover */
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <a class="navbar-brand" href="/BookBytes/home">BookBytes</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/BookBytes/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/BookBytes/book">Collection</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/BookBytes/contact">Contact</a>
+                </li>
+                <% if (user) { %>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item text-dark" href="/BookBytes/book/profile">Your Profile</a>
+                            <a class="dropdown-item text-dark" href="/BookBytes/book/yourbooks">Your Books</a>
+                            <a class="dropdown-item text-dark" href="/BookBytes/error">Your Cart</a>
+                            <a class="dropdown-item text-dark" href="/BookBytes/error">Your Orders</a>
+                            <a class="dropdown-item text-dark" href="/BookBytes/error">Settings</a>
+                            <a class="dropdown-item text-dark" href="/BookBytes/logout">Logout</a>
+                        </div>
+                    </li>
+                <% } else { %>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-user"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item text-dark" href="/BookBytes/login">Login</a>
+                            <a class="dropdown-item text-dark" href="/BookBytes/signup">Sign Up</a>
+                        </div>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>BookBytes</h1>
+    </div>
+    <% if (messages.error) { %>
+        <div class="alert alert-danger">
+            <ul>
+                <% messages.error.forEach(msg => { %>
+                    <li><%= msg %></li>
+                <% }); %>
+            </ul>
+        </div>
+    <% } %>
+    <% if (messages.success) { %>
+        <div class="alert alert-success">
+            <%= messages.success %>
+        </div>
+    <% } %>
+    <% if (messages.profileMessage) { %>
+        <div class="alert alert-warning">
+            <%= messages.profileMessage %>
+            <a href="/BookBytes/signup/userinfo" class="btn btn-warning ml-2">Complete Profile</a>
+        </div>
+    <% } %>
+    <!-- Main Container -->
+    <div class="container">
+        <div class="text-right mb-3">
+            <a href="/BookBytes/book/new" class="btn btn-success">Publish</a>
+        </div>
+
+        <!-- <h1 class="title">Our Collection</h1> -->
+        <div class="row">
+            <% books.forEach(book => { %>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <% const bookImage = book.bookImg ? book.bookImg : defaultlink; %>
+                        <img src="<%= bookImage %>" class="card-img-top" alt="<%= book.title %>">
+                        <div class="card-body">
+                            <h3 class="card-title"><%= book.title %></h3>
+                            <p class="card-text"><strong>Author:</strong> <%= book.author %></p>
+                            <p class="card-text"><strong>Publish Year:</strong> <%= book.publishYear %></p>
+                            <p class="card-text"><strong>Type:</strong>
+                                <% if (book.type === "paid") { %>
+                                    <span class="badge badge-paid">Paid</span>
+                                <% } else { %>
+                                    <span class="badge badge-free">Free</span>
+                                <% } %>
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <div class="btn-group d-flex justify-content-between">
+                                <% if (book.type === "paid") { %>
+                                    <form action="/BookBytes/error" class="w-100">
+                                        <button class="btn btn-primary w-100">Pay Now</button>
+                                    </form>
+                                    <a href="/BookBytes/book/<%= book._id %>/description" class="btn btn-secondary w-100">Description</a>
+                                <% } else { %>
+                                    <a href="/BookBytes/error" class="btn btn-primary w-100">Read Now</a>
+                                    <a href="/BookBytes/book/<%= book._id %>/description" class="btn btn-secondary w-100">Description</a>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+
+        <!-- Pagination Controls -->
+        <nav>
+            <ul class="pagination justify-content-center">
+                <% if (currentPage > 1) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/BookBytes/book?page=<%= currentPage - 1 %>">Previous</a>
+                    </li>
+                <% } %>
+                <% for (let i = 1; i <= totalPages; i++) { %>
+                    <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                        <a class="page-link" href="/BookBytes/book?page=<%= i %>"><%= i %></a>
+                    </li>
+                <% } %>
+                <% if (currentPage < totalPages) { %>
+                    <li class="page-item">
+                        <a class="page-link" href="/BookBytes/book?page=<%= currentPage + 1 %>">Next</a>
+                    </li>
+                <% } %>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <div class="container">
+            <p>
+                <a href="https://www.facebook.com" target="_blank" class="text-white mx-2">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="https://www.instagram.com" target="_blank" class="text-white mx-2">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="mailto:someone@example.com" target="_blank" class="text-white mx-2">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </p>
+            <p>© 2024 BookBytes. All Rights Reserved.</p>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function showDescription(description) {
+            alert(description);
+        }
+    </script>
+</body>
+</html>
+
